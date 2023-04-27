@@ -1,0 +1,13 @@
+Package: Conv2Oct
+Title: Converts third-octave data to octave data
+Version: 0.0.0.9000
+Authors@R: 
+    person("Marco", "Velasco", email = "marco.velasco@ghd.com", role = "cre")
+Description: Converts to ocatve data.
+License: use_mit_license()
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
