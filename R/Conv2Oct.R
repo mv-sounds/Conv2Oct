@@ -9,19 +9,32 @@
 #' @examples
 #' Conv2Oct(file_path)
 
-Conv2Oct <- function(df) {
+Conv2Oct <- function(df,sheet_name) {
   if (!require("dplyr")) {
     install.packages("dplyr")
   }
     library("dplyr")
+
+  if (!require("readxl")) {
+    install.packages("readxl")
+  }
+  library("readxl")
+
+  if (!require("processx")) {
+    install.packages("processx")
+  }
+  library("processx")
+
+
     # Create a new folder called "CSVs" if it does not already exist
   if (!dir.exists("CSVs")) {
     dir.create("CSVs")
   }
-    #import data and create a dataframe from row 15 onwards
 
-  df <- read.csv(file_path, header = TRUE, skip = 14)
-      # define the center frequencies for each octave band
+    # read the sheet into a data frame
+  df <- read_excel(file_path,sheet = sheet_name)
+
+    # define the center frequencies for each octave band
   center_freqs <- c(31.5, 63, 125, 250, 500, 1000, 2000, 4000, 8000, 16000)
 
   # define the corresponding column names for each octave band
@@ -36,7 +49,7 @@ Conv2Oct <- function(df) {
     # iterate over each octave band
     for (j in 1:length(center_freqs)) {
       # calculate the lower and upper indices of the three columns
-      lower_index <- 14 + (j - 1) * 3
+      lower_index <- 4 + (j - 1) * 3
       upper_index <- lower_index + 2
 
       # extract the three decibel levels and convert them to numeric values
@@ -52,16 +65,12 @@ Conv2Oct <- function(df) {
   }
   #Subset time, Ln and overall weighted values from original data
   subset_time <- df[, c(1:2)]
-  subset_Ln <- round(df[, c(3:12)], digits = 1)
-  subset_weight <- round(df[, c(44:46)], digits = 1)
+  subset_weight <- round(df[, c(34:36)], digits = 1)
   # Combine subsets with original dataframe
-  data_df <- cbind(subset_time, subset_Ln, octave_df,subset_weight)
+  data_df <- cbind(subset_time, octave_df,subset_weight)
   data_df$time <- as.POSIXct(data_df$time, format = "%H:%M:%S")
   # export the new dataframe as octave band data
-  write.csv(data_df,  file = "CSVs/Octave._bands.csv", row.names = FALSE)
-  #export SLM data
-  SLM_df <- read.csv(file_path, header = FALSE, nrows = 13)
-  colnames(SLM_df) <- c("parameter", "setting")
-  write.csv(SLM_df, "CSVs/SLM_info.csv", row.names = FALSE)
+  write.csv(data_df,  file = "CSVs/Octave_bands.csv", row.names = FALSE)
+
   return(data_df)
 }

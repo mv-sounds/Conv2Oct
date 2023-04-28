@@ -4,7 +4,7 @@
 \alias{Conv2Oct}
 \title{Converts Svan 1/3 octave data to octave data}
 \usage{
-Conv2Oct(df)
+Conv2Oct(df, sheet_name)
 }
 \arguments{
 \item{df}{the svan data in third octaves}

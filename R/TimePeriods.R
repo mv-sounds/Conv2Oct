@@ -56,7 +56,7 @@ TimePeriods<- function(data, num_periods) {
 
     # Filter the period subset based on the target level
     filtered_results <- period_subset %>%
-      filter(`Leq` >= target_level - 0.5 & `Leq` <= target_level + 0.4)
+      filter(`A` >= target_level - 0.5 & `A` <= target_level + 0.4)
 
     # Write filtered period subset to a CSV file
     write.csv(filtered_results, file = paste0("CSVs/period_filt_", i, ".csv"), row.names = FALSE)
